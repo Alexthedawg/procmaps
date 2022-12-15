@@ -1,0 +1,54 @@
+Author: Alex Wang axw582           Date: 14 Dec 2022
+
+******************************************************************************************************
+
+The purpose of this utility is to show the .so files associated with a specified PROC_NUMBER (pid).
+An example of this functionality is shown below:
+
+:~/procmaps$ ./procmaps 2932508
+
+7fb4c1842000-7fb4c1844000 r--p 00000000 fd:00 801957                     /usr/lib/x86_64-linux-gnu/librt-2.31.so
+7fb4c1844000-7fb4c1848000 r-xp 00002000 fd:00 801957                     /usr/lib/x86_64-linux-gnu/librt-2.31.so
+7fb4c1848000-7fb4c184a000 r--p 00006000 fd:00 801957                     /usr/lib/x86_64-linux-gnu/librt-2.31.so
+7fb4c184a000-7fb4c184b000 r--p 00007000 fd:00 801957                     /usr/lib/x86_64-linux-gnu/librt-2.31.so
+7fb4c184b000-7fb4c184c000 rw-p 00008000 fd:00 801957                     /usr/lib/x86_64-linux-gnu/librt-2.31.so
+7fb4c184c000-7fb4c1892000 r--p 00000000 fd:00 802341                     /usr/lib/systemd/libsystemd-shared-245.so
+7fb4c1892000-7fb4c1a06000 r-xp 00046000 fd:00 802341                     /usr/lib/systemd/libsystemd-shared-245.so
+7fb4c1a06000-7fb4c1a93000 r--p 001ba000 fd:00 802341                     /usr/lib/systemd/libsystemd-shared-245.so
+7fb4c1a93000-7fb4c1a94000 ---p 00247000 fd:00 802341                     /usr/lib/systemd/libsystemd-shared-245.so
+7fb4c1a94000-7fb4c1aa3000 r--p 00247000 fd:00 802341                     /usr/lib/systemd/libsystemd-shared-245.so
+7fb4c1aa3000-7fb4c1aa4000 rw-p 00256000 fd:00 802341                     /usr/lib/systemd/libsystemd-shared-245.so
+7fb4c1aa6000-7fb4c1ac8000 r--p 00000000 fd:00 801936                     /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fb4c1ac8000-7fb4c1c40000 r-xp 00022000 fd:00 801936                     /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fb4c1c40000-7fb4c1c8e000 r--p 0019a000 fd:00 801936                     /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fb4c1c8e000-7fb4c1c92000 r--p 001e7000 fd:00 801936                     /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fb4c1c92000-7fb4c1c94000 rw-p 001eb000 fd:00 801936                     /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fb4c1cac000-7fb4c1cad000 r--p 00000000 fd:00 801928                     /usr/lib/x86_64-linux-gnu/ld-2.31.so
+7fb4c1cad000-7fb4c1cd0000 r-xp 00001000 fd:00 801928                     /usr/lib/x86_64-linux-gnu/ld-2.31.so
+7fb4c1cd0000-7fb4c1cd8000 r--p 00024000 fd:00 801928                     /usr/lib/x86_64-linux-gnu/ld-2.31.so
+7fb4c1cd9000-7fb4c1cda000 r--p 0002c000 fd:00 801928                     /usr/lib/x86_64-linux-gnu/ld-2.31.so
+7fb4c1cda000-7fb4c1cdb000 rw-p 0002d000 fd:00 801928                     /usr/lib/x86_64-linux-gnu/ld-2.31.so
+(END)
+
+The output of './procmaps 2932508' is piped into the less utility for easier navigation, particularly for
+larger outputs. This is especially useful when the user does not specify a PROC_NUMBER (i.e. the user runs
+the command './procmaps' with no second argument). When this happens, all .so files for all processes in
+/proc/$[pid]/maps are displayed, which can result in 100s of lines of output.
+
+******************************************************************************************************
+
+As a final note, this code comes with a Makefile, so typing 'make' in the CL should give an executable:
+
+:~/procmaps$ make
+g++ -Wall -Werror -g -c procmaps.cpp
+g++ -Wall -Werror -g -o procmaps procmaps.o
+
+:~/procmaps$ ls
+Makefile  procmaps  procmaps.cpp  procmaps.o  README
+
+:~/procmaps$ make distclean
+rm -f *.o
+rm -f procmaps
+
+:~/procmaps$ ls
+Makefile  procmaps.cpp  README
