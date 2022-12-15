@@ -1,3 +1,15 @@
+/*H**********************************************************************
+* FILENAME :        procmaps.cpp
+*
+* DESCRIPTION :
+*       Shows .so files associated with a specified PROC_NUMBER or pid.
+*       If no PROC_NUMBER or pid speficied, then shows all .so files in
+*       /proc/$[pid]/maps.
+*
+* AUTHOR :    Alex Wang           START DATE :    14 Dec 2022
+*
+*H*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,13 +27,13 @@ void printso (const int procn) {
   
   // grepping all .so files from /proc/nnn/maps, since no specific pid requested
   if (procn == -1) {
-    system ("ls /proc | grep -E '\\.so'  $(sed -En 's/([0-9]+)/\\/proc\\/\\1\\/maps/p')");
+    system ("ls /proc | grep -E '\\.so'  $(sed -En 's/([0-9]+)/\\/proc\\/\\1\\/maps/p') | less");
   }
   
   // if a pid is specified, grep the .so files from /proc/[pid]/maps
   if (procn != -1) {
-    char command [strlen ("grep -E '\\.so' /proc/%d/maps") *2];
-    sprintf (command, "grep -E '\\.so' /proc/%d/maps", procn);
+    char command [strlen ("grep -E '\\.so' /proc/%d/maps | less") *2];
+    sprintf (command, "grep -E '\\.so' /proc/%d/maps | less", procn);
     system (command);
   }
 }
