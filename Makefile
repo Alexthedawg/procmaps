@@ -7,10 +7,10 @@ TARGETS= procmaps
 All: $(TARGETS)
 
 procmaps: procmaps.o
-	$(CXX) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $<
 
-%.o: %.cpp
-	$(CXX) $(CFLAGS) -c $<
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
 
 clean:
 	rm -f *.o
